@@ -9,6 +9,20 @@
 namespace flutter_inappwebview_plugin
 {
   const std::string JAVASCRIPT_BRIDGE_NAME = "flutter_inappwebview";
+  const std::string ON_LOAD_RESOURCE_JS_SOURCE = "(function() {\
+          var observer = new PerformanceObserver(function(list) { \
+              list.getEntries().forEach(function(entry) {\
+              var resource = {\
+                  'url': entry.name,\
+                  'initiatorType': entry.initiatorType,\
+                  'startTime': entry.startTime,\
+                  'duration': entry.duration\
+                };\
+                window.flutter_inappwebview.callHandler('onLoadResource', resource);\
+              });\
+          });\
+          observer.observe({entryTypes: ['resource']});\
+      })();";
   const std::string JAVASCRIPT_BRIDGE_JS_SOURCE = "window." + JAVASCRIPT_BRIDGE_NAME + " = {}; \
   window." + JAVASCRIPT_BRIDGE_NAME + ".callHandler = function() { \
     var _callHandlerID = setTimeout(function() {}); \
@@ -16,7 +30,7 @@ namespace flutter_inappwebview_plugin
     return new Promise(function(resolve, reject) { \
       window." + JAVASCRIPT_BRIDGE_NAME + "[_callHandlerID] = { resolve: resolve, reject : reject };\
     });\
-  };";
+  };" + ON_LOAD_RESOURCE_JS_SOURCE;
   const std::string JAVASCRIPT_BRIDGE_JS_PLUGIN_SCRIPT_GROUP_NAME = "IN_APP_WEBVIEW_JAVASCRIPT_BRIDGE_JS_PLUGIN_SCRIPT";
   const std::string PLATFORM_READY_JS_SOURCE = "(function() { \
      if ((window.top == null || window.top === window) && window." + JAVASCRIPT_BRIDGE_NAME + " != null && window." + JAVASCRIPT_BRIDGE_NAME + "._platformReady == null) { \
