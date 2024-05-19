@@ -18,10 +18,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_inappwebview_windows:
+  flutter_inappwebview_platform_interface:
     git:
       url: https://github.com/songbirdzz/flutter_inappwebview
-      path: flutter_inappwebview_windows
+      path: flutter_inappwebview_platform_interface
       ref: master
 
 dev_dependencies:
