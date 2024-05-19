@@ -425,7 +425,7 @@ namespace flutter_inappwebview_plugin
 
             if (name.compare("callHandler") == 0 && body.contains("handlerName") && body.at("handlerName").is_string()) {
               auto handlerName = body.at("handlerName").get<std::string>();
-              auto callHandlerID = body.at("_callHandlerID").is_number_integer() ? body.at("_callHandlerID").get<int64_t>() : 0;
+              body.at("_callHandlerID").is_number_integer() ? body.at("_callHandlerID").get<int64_t>() : 0;
               std::string handlerArgs = body.at("args").is_string() ? body.at("args").get<std::string>() : "";
 
               auto callback = std::make_unique<WebViewChannelDelegate::CallJsHandlerCallback>();
