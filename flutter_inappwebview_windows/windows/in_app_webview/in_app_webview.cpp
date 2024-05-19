@@ -429,6 +429,9 @@ namespace flutter_inappwebview_plugin
               std::string handlerArgs = body.at("args").is_string() ? body.at("args").get<std::string>() : "";
 
               auto callback = std::make_unique<WebViewChannelDelegate::CallJsHandlerCallback>();
+              // This callback causes the program to crash, I don't know why.
+              // Since our webview only exist for a short time, I assume comment this out won't cause memory leaking.
+              /*
               callback->defaultBehaviour = [this, callHandlerID](const std::optional<const flutter::EncodableValue*> response)
                 {
                   std::string json = "null";
@@ -451,6 +454,7 @@ namespace flutter_inappwebview_plugin
                       delete window." + JAVASCRIPT_BRIDGE_NAME + "[" + std::to_string(callHandlerID) + "]; \
                     }", ContentWorld::page(), nullptr);
                 };
+              */
               channelDelegate->onCallJsHandler(handlerName, handlerArgs, std::move(callback));
             }
           }
